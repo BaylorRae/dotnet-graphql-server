@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.middleware;
 using Data;
+using GraphQL;
+using GraphQL.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Schema;
 
 namespace API
 {
@@ -32,6 +35,17 @@ namespace API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("BicycleShop"));
             });
+
+            services.AddTransient<IDependencyResolver>(servicesProvider =>
+            {
+                return new FuncDependencyResolver(servicesProvider.GetService);
+            });
+
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<IDocumentWriter, DocumentWriter>();
+
+            services.AddTransient<QueryType>();
+            services.AddTransient<BicycleShopSchema>();
 
             return services.BuildServiceProvider();
         }
