@@ -63,6 +63,17 @@ namespace API
 #endif
             
             app.UseGraphQLMiddleware<BicycleShopSchema>();
+
+            app.UseFileServer(new FileServerOptions
+            {
+                RequestPath = "/playground",
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "playground"
+                    )
+                )
+            });
             
             app.Run(async (context) => { await context.Response.WriteAsync("Hello World!"); });
         }

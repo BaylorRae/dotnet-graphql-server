@@ -1,5 +1,4 @@
-﻿using System;
-using GraphQL.Types;
+﻿using GraphQL.Types;
 
 namespace Schema
 {
