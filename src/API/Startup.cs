@@ -48,6 +48,8 @@ namespace API
             app.UseMiddleware<SeedDataMiddleware>();
 #endif
             
+            app.UseGraphQLMiddleware<BicycleShopSchema>();
+            
             app.Run(async (context) => { await context.Response.WriteAsync("Hello World!"); });
         }
     }
